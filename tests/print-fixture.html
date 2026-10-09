@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"></head><body>
+<script>
+// 仕様2件＋事前確認の状態を保存してから本番HTMLへ遷移する（印刷・復元の確認用）
+const long = Array.from({length: 4}, (_, i) => (i + 1) + '行目：基礎はお客様手配、設置場所は施設裏手の芝生エリア。搬入経路の幅を事前に確認する。').join('\n');
+localStorage.setItem('rink-barrel-config-sheet-v1', JSON.stringify({
+  date: '2026-10-09', customerName: 'テスト復元商事', contactName: '山田',
+  activeIndex: 0,
+  specs: [
+    { model: 'i – barrel Large R35（軒あり・前室あり）', roof: 'あり', paint: 'あり', specNote: long,
+      windows: ['大窓：背面 強化ガラス窓（1枚）'], heater: 'その他', heaterOther: '持込ストーブ',
+      destination: '千葉県', deliveryMethod: 'ユニック車', products: ['ロウリュセット', 'アンカー固定'] },
+    { model: 'i – barrel Small R15', destination: '配送なし' },
+    {}
+  ],
+  checks: { electrical: 'はい', secondary: 'はい', foundation: 'いいえ' }
+}));
+location.href = '../dist/バレルサウナ仕様確認書.html';
+</script></body></html>
