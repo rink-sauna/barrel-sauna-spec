@@ -76,6 +76,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   align-items: start;
 }
 .form-col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.preview-col { min-width: 0; }
 .preview-col {
   position: sticky;
   top: 92px;
@@ -87,7 +88,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 @media (max-width: 1099px) {
-  .app-main { grid-template-columns: 1fr; }
+  /* minmax(0, …) にしないと列が A4 プレビューの実寸幅まで広がり、スマホで横にはみ出す */
+  .app-main { grid-template-columns: minmax(0, 1fr); }
   .preview-col { position: static; max-height: none; }
 }
 
@@ -301,3 +303,38 @@ input:focus, select:focus, textarea:focus, .choice:focus-visible, .tab:focus-vis
 .stepper { display: flex; align-items: center; gap: 8px; }
 .stepper .btn { min-width: 40px; font-size: 18px; line-height: 1; }
 .stepper-value { min-width: 84px; text-align: center; font-weight: 700; font-size: 17px; color: var(--brown); }
+
+/* ---------- スマホ（幅640px以下） ---------- */
+@media screen and (max-width: 640px) {
+  .app-header { gap: 10px; padding: 8px 12px; }
+  .app-logo { height: 34px; }
+  .app-title { font-size: 16px; letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .app-actions { gap: 6px; flex-shrink: 0; }
+  .app-actions .btn { padding: 8px 10px; font-size: 14px; white-space: nowrap; }
+
+  .app-main { padding: 12px; gap: 16px; }
+  .form-col { gap: 14px; }
+  .card { padding: 16px 14px; border-radius: 10px; }
+  .card-title { font-size: 18px; }
+
+  .tabs { margin: 0 -6px 12px; padding: 0 6px; gap: 4px; }
+  .tab { padding: 8px 12px; font-size: 15px; }
+  .spec-tools { justify-content: stretch; }
+  .spec-tools .btn { flex: 1; }
+
+  .choice { padding: 9px 12px; font-size: 15px; }
+
+  /* 事前確認は説明文の下に はい／いいえ を並べる */
+  .check-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .check-row .choices { flex-wrap: nowrap; }
+  .check-row .choice { flex: 1; text-align: center; }
+
+  .preview-col { padding: 8px; border-radius: 10px; }
+  .preview { gap: 8px; }
+}
+
+/* 幅が特に狭い端末ではヘッダーの表題を省く（表題はプレビューにも出ている） */
+@media screen and (max-width: 420px) {
+  .app-title { display: none; }
+  .app-actions { margin-left: auto; }
+}

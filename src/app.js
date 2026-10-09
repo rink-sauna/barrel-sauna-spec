@@ -275,7 +275,8 @@ function exportPDF() {
 function fitPreview() {
   const col = document.querySelector('.preview-col');
   const pageWidthPx = 210 * 96 / 25.4;
-  const zoom = Math.min(1, (col.clientWidth - 32) / pageWidthPx);
+  const padding = parseFloat(getComputedStyle(col).paddingLeft) * 2;
+  const zoom = Math.min(1, (col.clientWidth - padding) / pageWidthPx);
   document.getElementById('preview').style.setProperty('--preview-zoom', String(Math.max(0.3, zoom)));
 }
 
