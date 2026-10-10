@@ -32,3 +32,4 @@ test('版: 初期値は初版(0)・表記', () => { assertEqual(createSpec().rev
 test('版: 仕様名の末尾に付く', () => { const s = updateSpec(createState(T), 0, {revision:2}); assertEqual(specName(s, 0), '20261009_仕様①_更新版2'); });
 test('版: 複数仕様のPDF名は先頭の仕様の版', () => { let s = addSpec(createState(T)); s = updateSpec(s, 0, {model:OPTIONS.model[0], revision:1}); s = updateSpec(s, 1, {model:OPTIONS.model[1], revision:3}); assertTrue(pdfTitle(s).endsWith('_仕様①②_更新版1')); });
 test('版: 不正な保存値は初版、範囲外は丸める', () => { const s = sanitizeState({specs:[{revision:'x'}, {revision:-3}, {revision:2.5}, {revision:5}, {revision:1000}]}, T); assertEqual(s.specs.map(p => p.revision), [0, 0, 0, 5, MAX_REVISION]); });
+test('OPTIONS: オプション製品にLED照明', () => { assertTrue(OPTIONS.products.includes('LED照明')); });
