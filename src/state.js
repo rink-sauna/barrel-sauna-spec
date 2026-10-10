@@ -1,7 +1,7 @@
 // 確認書の状態を扱う純粋関数。すべて入力を変更せず新しい状態を返す。
 
-const MAX_SPECS = 5;
-const SPEC_NUMBER_LABELS = ['①', '②', '③', '④', '⑤'];
+const MAX_SPECS = 10;
+const SPEC_NUMBER_LABELS = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩'];
 const DEFAULT_CONTACT_NAME = '深山';
 const MAX_REVISION = 99;
 
@@ -99,18 +99,26 @@ function printableSpecs(state) {
     .filter(p => p.spec.model !== '');
 }
 
-// 仕様名は入力内容から自動で決める：日付_お客様名_都道府県_規格_仕様①_版（未入力の部分は省く）
+// 仕様名は入力内容から自動で決める：日付_お客様名様_都道府県_規格_仕様①(_更新版N)
+// 未入力の部分は省き、版は更新版のときだけ付ける
 function specName(state, index) {
   const spec = state.specs[index];
   const parts = [
     state.date.replace(/-/g, ''),
-    state.customerName.trim(),
+    customerWithHonorific(state.customerName),
     spec.destination,
     spec.model,
     '仕様' + specNumberLabel(index + 1),
-    revisionLabel(spec.revision),
+    spec.revision > 0 ? revisionLabel(spec.revision) : '',
   ];
   return parts.filter(Boolean).join('_');
+}
+
+// お客様名の後ろに「様」を付ける（空欄なら付けない、既に「様」で終わっていれば重ねない）
+function customerWithHonorific(name) {
+  const n = name.trim();
+  if (!n) return '';
+  return n.endsWith('様') ? n : n + '様';
 }
 
 // 版の表記：0 = 初版、1以上 = 更新版N
@@ -118,18 +126,18 @@ function revisionLabel(revision) {
   return revision > 0 ? '更新版' + revision : '初版';
 }
 
-// PDF保存時のファイル名。印刷する仕様が複数なら、先頭の仕様の内容と版に仕様番号を並べる（例：…_仕様①③_初版）
+// PDF保存時のファイル名。印刷する仕様が複数なら、先頭の仕様の内容と版に仕様番号を並べる（例：…_仕様①③_更新版1）
 function pdfTitle(state) {
   const specs = printableSpecs(state);
   if (specs.length === 0) return '';
   const first = specs[0].spec;
   const parts = [
     state.date.replace(/-/g, ''),
-    state.customerName.trim(),
+    customerWithHonorific(state.customerName),
     first.destination,
     first.model,
     '仕様' + specs.map(p => specNumberLabel(p.number)).join(''),
-    revisionLabel(first.revision),
+    first.revision > 0 ? revisionLabel(first.revision) : '',
   ];
   return parts.filter(Boolean).join('_').replace(/[\\/:*?"<>|]/g, '-');
 }
