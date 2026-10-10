@@ -108,10 +108,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
   border-left: 4px solid var(--gold);
   padding-left: 10px;
 }
-.grid-3 { display: grid; grid-template-columns: 1fr 1.4fr 1.2fr; gap: 14px; }
-@media (max-width: 700px) { .grid-3 { grid-template-columns: 1fr; } }
+.grid-3 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1.2fr); gap: 14px; }
+@media (max-width: 700px) { .grid-3 { grid-template-columns: minmax(0, 1fr); } }
 
-.field { display: flex; flex-direction: column; gap: 6px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .field-label { font-weight: 700; font-size: 16px; color: var(--brown); }
 .field-hint { margin: 0; font-size: 13px; color: var(--muted); }
 .field-note { margin: 0; font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
@@ -134,6 +134,16 @@ input[type="text"], input[type="date"], select, textarea {
   font-size: 17px;
 }
 textarea { resize: vertical; }
+/* iPhone(Safari)の日付欄は独自の最小幅を持ち、width:100% を無視してはみ出すため標準の見た目を外す */
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 46px;
+}
+input[type="date"]::-webkit-date-and-time-value { text-align: left; }
 input:focus, select:focus, textarea:focus, .choice:focus-visible, .tab:focus-visible, .btn:focus-visible {
   outline: 3px solid rgba(201, 168, 10, .5);
   outline-offset: 1px;
