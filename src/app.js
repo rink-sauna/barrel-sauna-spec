@@ -280,7 +280,14 @@ function fitPreview() {
   document.getElementById('preview').style.setProperty('--preview-zoom', String(Math.max(0.3, zoom)));
 }
 
+// Safari は印刷の仕組みが少し違うため、印刷用CSSで切り替えられるよう印を付ける
+function markSafari() {
+  const ua = navigator.userAgent;
+  if (/safari/i.test(ua) && !/chrome|crios|chromium|edg|android|fxios/i.test(ua)) document.documentElement.classList.add('is-safari');
+}
+
 function init() {
+  markSafari();
   const app = document.getElementById('app');
   app.innerHTML = shellHTML();
   app.addEventListener('input', onInput);

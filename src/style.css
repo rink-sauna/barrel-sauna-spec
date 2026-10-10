@@ -290,17 +290,23 @@ input:focus, select:focus, textarea:focus, .choice:focus-visible, .tab:focus-vis
   .app-main { display: block; padding: 0; }
   .preview-col { position: static; max-height: none; overflow: visible; background: none; border-radius: 0; padding: 0; }
   .preview { zoom: 1 !important; display: block; }
+  html, body { height: auto !important; }
+  /* 最低の高さを付けると、Safari など印刷範囲が少し狭いブラウザで1ページからはみ出して白紙ページが出るため付けない */
   .page {
     width: auto;
-    min-height: 263mm;
+    min-height: 0;
     padding: 0;
     box-shadow: none;
     break-after: page;
+    page-break-after: always;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  .page:last-child { break-after: auto; }
+  .page:last-child { break-after: auto; page-break-after: auto; }
+  .page > :last-child { margin-bottom: 0; }
   .page-no { display: none; }
+  /* Safari は用紙ごとのページ番号（@page の余白欄）に対応していないので、ページ内に番号を出す */
+  .is-safari .page-no { display: block; margin-top: 4mm; }
 }
 
 /* 自動で決まる仕様名（入力欄ではないので枠なしで表示） */
