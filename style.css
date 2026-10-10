@@ -1,0 +1,358 @@
+:root {
+  --brown: #4B2721;
+  --brown-dark: #3a1d18;
+  --gold: #C9A80A;
+  --green: #5FBF62;
+  --bg: #f4f1ec;
+  --card: #ffffff;
+  --ink: #2b2420;
+  --muted: #7a6f66;
+  --line: #e2dbd2;
+  --sel: #fbf3d4;
+  --danger: #b3402f;
+  --serif: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+  --sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* ---------- ヘッダー ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 24px;
+  background: var(--brown);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+}
+/* ロゴを押すと Rink app ポータルへ戻る */
+.app-home { display: block; flex-shrink: 0; border-radius: 4px; }
+.app-logo { height: 48px; display: block; }
+.app-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: .08em;
+}
+.app-actions { margin-left: auto; display: flex; gap: 10px; }
+
+/* ---------- ボタン ---------- */
+.btn {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn-primary { background: var(--gold); border-color: var(--gold); color: var(--brown-dark); font-weight: 700; }
+.btn-primary:hover { filter: brightness(1.05); }
+.btn-ghost { background: transparent; color: #fff; border-color: rgba(255, 255, 255, .5); }
+.btn-small { padding: 6px 14px; font-size: 15px; }
+.btn-danger { color: var(--danger); }
+
+/* ---------- レイアウト ---------- */
+.app-main {
+  display: grid;
+  grid-template-columns: minmax(520px, 1fr) minmax(420px, 1fr);
+  gap: 24px;
+  padding: 24px;
+  align-items: start;
+}
+.form-col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.preview-col { min-width: 0; }
+.preview-col {
+  position: sticky;
+  top: 92px;
+  max-height: calc(100vh - 116px);
+  overflow: auto;
+  background: #d9d3cb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+@media (max-width: 1099px) {
+  /* minmax(0, …) にしないと列が A4 プレビューの実寸幅まで広がり、スマホで横にはみ出す */
+  .app-main { grid-template-columns: minmax(0, 1fr); }
+  .preview-col { position: static; max-height: none; }
+}
+
+/* ---------- カード・入力 ---------- */
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+}
+.card-title {
+  margin: 0 0 14px;
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--brown);
+  border-left: 4px solid var(--gold);
+  padding-left: 10px;
+}
+.grid-3 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1.2fr); gap: 14px; }
+@media (max-width: 700px) { .grid-3 { grid-template-columns: minmax(0, 1fr); } }
+
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field-label { font-weight: 700; font-size: 16px; color: var(--brown); }
+.field-hint { margin: 0; font-size: 13px; color: var(--muted); }
+.field-note { margin: 0; font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.badge {
+  display: inline-block;
+  background: var(--green);
+  color: #fff;
+  border-radius: 999px;
+  padding: 1px 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+input[type="text"], input[type="date"], select, textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  font-size: 17px;
+}
+textarea { resize: vertical; }
+/* iPhone(Safari)の日付欄は独自の最小幅を持ち、width:100% を無視してはみ出すため標準の見た目を外す */
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 46px;
+}
+input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+input:focus, select:focus, textarea:focus, .choice:focus-visible, .tab:focus-visible, .btn:focus-visible {
+  outline: 3px solid rgba(201, 168, 10, .5);
+  outline-offset: 1px;
+}
+
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice {
+  border: 2px solid var(--line);
+  background: #fff;
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: left;
+}
+.choice:hover:not(:disabled) { border-color: var(--gold); }
+.choice.is-on {
+  border-color: var(--gold);
+  background: var(--sel);
+  font-weight: 700;
+}
+.choice.is-on::before { content: "✓ "; color: var(--brown); }
+.choice:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ---------- 仕様タブ ---------- */
+.spec-card { padding-top: 14px; }
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  border-bottom: 2px solid var(--brown);
+  margin: 0 -8px 14px;
+  padding: 0 8px;
+}
+.tab {
+  border: 1px solid var(--line);
+  border-bottom: none;
+  background: #efe9e1;
+  border-radius: 10px 10px 0 0;
+  padding: 10px 18px;
+  font-size: 16px;
+  cursor: pointer;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tab.is-active { background: var(--brown); border-color: var(--brown); color: #fff; font-weight: 700; }
+.tab-add { background: transparent; border-style: dashed; color: var(--brown); }
+.tab-add:disabled { opacity: .4; cursor: not-allowed; }
+.spec-tools { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 10px; }
+.spec-fields { display: flex; flex-direction: column; gap: 18px; }
+
+/* ---------- 事前確認 ---------- */
+.check-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+.check-row:first-of-type { border-top: none; }
+.check-q { margin: 0; font-weight: 700; color: var(--brown); }
+.check-desc { margin: 2px 0 0; font-size: 15px; }
+.check-row .choices { flex-shrink: 0; flex-wrap: nowrap; }
+
+/* ---------- A4 プレビュー（確認書本体） ---------- */
+.preview { zoom: var(--preview-zoom, 1); display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 15mm;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--sans);
+  font-size: 10.5pt;
+  line-height: 1.55;
+}
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8mm;
+  padding-bottom: 4mm;
+  border-bottom: 1.5pt solid var(--brown);
+  margin-bottom: 6mm;
+}
+.sheet-title {
+  margin: 0 0 3mm;
+  font-family: var(--serif);
+  font-size: 20pt;
+  letter-spacing: .12em;
+  color: #000;
+}
+.sheet-meta { margin: 0; display: grid; grid-template-columns: auto; gap: .5mm; }
+.sheet-meta div { display: flex; gap: 4mm; }
+.sheet-meta dt { width: 18mm; color: #555; }
+.sheet-meta dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+.logo { width: 52mm; height: auto; border-radius: 1.5mm; flex-shrink: 0; }
+.sheet-body { flex: 1; }
+.spec-title {
+  margin: 0 0 3mm;
+  font-family: var(--serif);
+  font-size: 14pt;
+  color: var(--brown);
+  overflow-wrap: anywhere;
+}
+.spec-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.spec-table th, .spec-table td {
+  border: .75pt solid #bbb;
+  padding: 2mm 3mm;
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.spec-table .col-label { width: 38%; }
+.spec-table tbody th { background: #f5f0e8; font-weight: 700; }
+.spec-table thead td.spec-head { border: none; padding: 0; }
+.spec-table thead .spec-title { margin-bottom: 3mm; }
+.spec-table tr { break-inside: avoid; }
+.empty-note { color: #888; text-align: center; margin-top: 40mm; }
+.check-list { list-style: none; margin: 0; padding: 0; }
+.check-item { border: .75pt solid #bbb; padding: 3mm 4mm; margin-bottom: 3mm; break-inside: avoid; }
+.check-head { display: flex; justify-content: space-between; gap: 4mm; font-weight: 700; }
+.check-answer { border: .75pt solid #888; padding: 0 4mm; min-width: 16mm; text-align: center; }
+.check-text { margin: 1.5mm 0 0; }
+.page-no { margin-top: 6mm; text-align: center; font-size: 9pt; color: #666; }
+
+/* ---------- 印刷（PDF出力） ---------- */
+@page {
+  size: A4 portrait;
+  margin: 15mm 15mm 18mm;
+  /* 1仕様が2枚にまたがっても正しい通し番号になるよう、印刷時は用紙ごとに番号を振る */
+  @bottom-center { content: counter(page) " / " counter(pages); font-size: 9pt; color: #666; }
+}
+
+@media print {
+  body { background: #fff; }
+  .app-header, .form-col { display: none !important; }
+  .app-main { display: block; padding: 0; }
+  .preview-col { position: static; max-height: none; overflow: visible; background: none; border-radius: 0; padding: 0; }
+  .preview { zoom: 1 !important; display: block; }
+  html, body { height: auto !important; }
+  /* 最低の高さを付けると、Safari など印刷範囲が少し狭いブラウザで1ページからはみ出して白紙ページが出るため付けない */
+  .page {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page:last-child { break-after: auto; page-break-after: auto; }
+  .page > :last-child { margin-bottom: 0; }
+  .page-no { display: none; }
+  /* Safari は用紙ごとのページ番号（@page の余白欄）に対応していないので、ページ内に番号を出す */
+  .is-safari .page-no { display: block; margin-top: 4mm; }
+}
+
+/* 自動で決まる仕様名（入力欄ではないので枠なしで表示） */
+.spec-name { margin-bottom: 18px; padding: 10px 14px; background: #faf7f2; border-radius: 8px; border: 1px dashed var(--line); }
+.spec-name-value { margin: 2px 0 0; font-size: 16px; overflow-wrap: anywhere; }
+
+/* 版（初版／更新版N） */
+.revision { margin-bottom: 14px; }
+.revision-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.stepper { display: flex; align-items: center; gap: 8px; }
+.stepper .btn { min-width: 40px; font-size: 18px; line-height: 1; }
+.stepper-value { min-width: 84px; text-align: center; font-weight: 700; font-size: 17px; color: var(--brown); }
+
+/* ---------- スマホ（幅640px以下） ---------- */
+@media screen and (max-width: 640px) {
+  .app-header { gap: 10px; padding: 8px 12px; }
+  .app-logo { height: 34px; }
+  .app-title { font-size: 16px; letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .app-actions { gap: 6px; flex-shrink: 0; }
+  .app-actions .btn { padding: 8px 10px; font-size: 14px; white-space: nowrap; }
+
+  .app-main { padding: 12px; gap: 16px; }
+  .form-col { gap: 14px; }
+  .card { padding: 16px 14px; border-radius: 10px; }
+  .card-title { font-size: 18px; }
+
+  .tabs { margin: 0 -6px 12px; padding: 0 6px; gap: 4px; }
+  .tab { padding: 8px 12px; font-size: 15px; }
+  .spec-tools { justify-content: stretch; }
+  .spec-tools .btn { flex: 1; }
+
+  .choice { padding: 9px 12px; font-size: 15px; }
+
+  /* 事前確認は説明文の下に はい／いいえ を並べる */
+  .check-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .check-row .choices { flex-wrap: nowrap; }
+  .check-row .choice { flex: 1; text-align: center; }
+
+  .preview-col { padding: 8px; border-radius: 10px; }
+  .preview { gap: 8px; }
+}
+
+/* 幅が特に狭い端末ではヘッダーの表題を省く（表題はプレビューにも出ている） */
+@media screen and (max-width: 420px) {
+  .app-title { display: none; }
+  .app-actions { margin-left: auto; }
+}
