@@ -41,6 +41,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
   color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
 }
+/* ロゴを押すと Rink app ポータルへ戻る */
+.app-home { display: block; flex-shrink: 0; border-radius: 4px; }
 .app-logo { height: 48px; display: block; }
 .app-title {
   margin: 0;

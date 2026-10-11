@@ -15,7 +15,7 @@ function h(s) {
 function shellHTML() {
   return (
     '<header class="app-header">' +
-      '<img class="app-logo" src="' + LOGO_SRC + '" alt="Rink SAUNA">' +
+      '<a class="app-home" href="https://rink-sauna.github.io/" aria-label="Rink app ポータルへ"><img class="app-logo" src="' + LOGO_SRC + '" alt="Rink SAUNA"></a>' +
       '<h1 class="app-title">バレルサウナ仕様確認書</h1>' +
       '<div class="app-actions">' +
         '<button type="button" class="btn btn-ghost" data-action="reset">新規作成</button>' +
